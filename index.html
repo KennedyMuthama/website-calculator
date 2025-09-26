@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Development Cost Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .currency-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .currency-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .currency-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .input-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #4a5568;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.95rem;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .radio-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+
+        .radio-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .result-section {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .total-cost {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .cost-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .breakdown {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .breakdown-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 100%;
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+            
+            .total-cost {
+                font-size: 2.5rem;
+            }
+
+            .currency-switcher {
+                flex-direction: row;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .currency-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+
+            .input-section {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+                margin-bottom: 15px;
+            }
+
+            select, input[type="number"] {
+                padding: 10px 12px;
+                font-size: 0.95rem;
+            }
+
+            .breakdown {
+                padding: 15px;
+            }
+
+            .breakdown-item {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                margin: 5px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+            }
+
+            .total-cost {
+                font-size: 2rem;
+            }
+
+            .currency-btn {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+
+            .input-section {
+                padding: 15px;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .icon {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+            }
+
+            select, input[type="number"] {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+
+            .radio-option {
+                padding: 8px;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .radio-option label {
+                font-size: 0.9rem;
+            }
+
+            .result-section {
+                padding: 20px;
+            }
+
+            .breakdown {
+                padding: 12px;
+            }
+
+            .breakdown-item {
+                font-size: 0.85rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+            }
+
+            .breakdown-item:last-child {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .container {
+                padding: 10px;
+                margin: 2px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .total-cost {
+                font-size: 1.8rem;
+            }
+
+            .currency-btn {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+
+            .input-section {
+                padding: 12px;
+            }
+
+            .section-title {
+                font-size: 1rem;
+            }
+
+            select, input[type="number"] {
+                padding: 6px 8px;
+                font-size: 0.85rem;
+            }
+
+            .breakdown-title {
+                font-size: 1rem;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Website Development Calculator</h1>
+            <div class="currency-switcher">
+                <button class="currency-btn active" data-currency="KES">KES</button>
+                <button class="currency-btn" data-currency="USD">USD</button>
+            </div>
+        </div>
+        
+        <div class="calculator-grid">
+            <!-- Domain Section -->
+            <div class="input-section">
+                <h3 class="section-title">
+                    <div class="icon">🌐</div>
+                    Domain
+                </h3>
+                <div class="form-group">
+                    <label for="domainType">Domain Type:</label>
+                    <select id="domainType">
+                        <option value="" disabled selected>Select domain type</option>
+                        <option value="3000">.com</option>
+                        <option value="3500">.org</option>
+                        <option value="1500">.co.ke</option>
+                        <option value="1500">.ac.ke</option>
+                        <option value="4000">.ke</option>
+                        <option value="3000">.africa</option>
+                        <option value="0">I have domain</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Hosting Section -->
+            <div class="input-section">
+                <h3 class="section-title">
+                    <div class="icon">☁️</div>
+                    Hosting
+                </h3>
+                <div class="form-group">
+                    <label for="hostingType">Hosting Plan:</label>
+                    <select id="hostingType">
+                        <option value="" disabled selected>Select hosting plan</option>
+                        <option value="12000">Premium Shared</option>
+                        <option value="19500">Cloud Starter</option>
+                        <option value="39000">Cloud Pro</option>
+                        <option value="78000">Cloud Premium</option>
+                        <option value="0">I have hosting</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Pages Section -->
+            <div class="input-section">
+                <h3 class="section-title">
+                    <div class="icon">📄</div>
+                    Website Design & Development
+                </h3>
+                <div class="form-group">
+                    <label for="pageCount">Number of Pages:</label>
+                    <input type="number" id="pageCount" min="0" max="50" value="" placeholder="Enter number of pages">
+                </div>
+                <div class="form-group">
+                    <label>Blog:</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="includeBlog" name="blog" value="36000">
+                            <label for="includeBlog">Include a blog</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="noBlog" name="blog" value="0">
+                            <label for="noBlog">Do not include a blog</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design Section -->
+            <div class="input-section">
+                <h3 class="section-title">
+                    <div class="icon">🎨</div>
+                    Design & Branding
+                </h3>
+                <div style="font-size: 0.85em; color: #666; margin-bottom: 15px;">
+                    (Logo system, Color palette, Typography, Brand Applications)
+                </div>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="haveBranding" name="branding" value="0">
+                        <label for="haveBranding">I have Branding Guidelines</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="needBranding" name="branding" value="12000">
+                        <label for="needBranding">I need Branding Guidelines</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="result-section pulse">
+                <div class="total-cost" id="totalCost">KES 0</div>
+                <div class="cost-label">Total Estimated Cost</div>
+                
+                <div class="breakdown">
+                    <div class="breakdown-title">💰 Cost Breakdown</div>
+                    <div class="breakdown-item">
+                        <span>Domain:</span>
+                        <span id="domainCost">KES 0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Hosting (Annual):</span>
+                        <span id="hostingCost">KES 0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Development:</span>
+                        <span id="developmentCost">KES 0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Blog:</span>
+                        <span id="blogCost">KES 0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Design & Branding:</span>
+                        <span id="designCost">KES 0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Total:</span>
+                        <span id="totalBreakdown">KES 0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Disclaimer Section -->
+        <div style="background: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 20px; margin-top: 30px; border: 1px solid rgba(102, 126, 234, 0.2); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);">
+            <h4 style="color: #4a5568; margin-bottom: 10px; font-size: 1.1rem;">📋 Disclaimer</h4>
+            <p style="color: #666; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                Please note: the final amount displayed by this calculator is an estimate and may vary slightly from the actual project cost, which depends on the final project specifications. This calculator is intended only for corporate informational websites. For e-commerce websites or sites with advanced functionality, please contact the Ushauri Tech Team <a href="https://www.ushauritech.com/contact-us/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 600;">here</a>.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentCurrency = 'KES';
+        const exchangeRate = 130; // 1 USD = 130 KES
+
+        // Domain prices in KES
+        const domainPricesKES = {
+            '3000': 3000,   // .com
+            '3500': 3500,   // .org
+            '1500': 1500,   // .co.ke & .ac.ke
+            '4000': 4000,   // .ke
+            '0': 0          // I have domain
+        };
+
+        // Hosting prices in KES
+        const hostingPricesKES = {
+            '12000': 12000, // Premium Shared
+            '19500': 19500, // Cloud Starter
+            '39000': 39000, // Cloud Pro
+            '78000': 78000, // Cloud Premium
+            '0': 0          // I have hosting
+        };
+
+        function convertToUSD(kesAmount) {
+            return Math.ceil(kesAmount / exchangeRate);
+        }
+
+        function convertToKES(usdAmount) {
+            return usdAmount * exchangeRate;
+        }
+
+        function formatCurrency(amount, currency) {
+            if (currency === 'KES') {
+                return 'KES ' + amount.toLocaleString();
+            } else {
+                return '$' + amount.toLocaleString();
+            }
+        }
+
+        function calculatePageCost(pageCount) {
+            let totalCost = 0;
+            let breakdown = [];
+
+            if (pageCount === 0) {
+                return { totalCost: 0, breakdown: [] };
+            }
+
+            for (let i = 1; i <= pageCount; i++) {
+                let pageCost;
+                if (i === 1) {
+                    pageCost = 18000;
+                    breakdown.push(`Page 1: KES 18,000`);
+                } else if (i >= 2 && i <= 4) {
+                    pageCost = 15000;
+                    breakdown.push(`Page ${i}: KES 15,000`);
+                } else {
+                    pageCost = 12000;
+                    breakdown.push(`Page ${i}: KES 12,000`);
+                }
+                totalCost += pageCost;
+            }
+
+            return { totalCost, breakdown };
+        }
+
+        function updatePageBreakdown() {
+            // This function is no longer needed since we removed the breakdown display
+        }
+
+        function calculateTotal() {
+            // Get values in KES
+            const domainCostKES = parseFloat(document.getElementById('domainType').value) || 0;
+            const hostingCostKES = parseFloat(document.getElementById('hostingType').value) || 0;
+            const pageCount = parseInt(document.getElementById('pageCount').value) || 0;
+            
+            const brandingRadio = document.querySelector('input[name="branding"]:checked');
+            const brandingCostKES = brandingRadio ? parseFloat(brandingRadio.value) : 0;
+            
+            const blogRadio = document.querySelector('input[name="blog"]:checked');
+            const blogCostKES = blogRadio ? parseFloat(blogRadio.value) : 0;
+
+            // Calculate development cost
+            const { totalCost: developmentCostKES } = calculatePageCost(pageCount);
+
+            // Total in KES
+            const totalKES = domainCostKES + hostingCostKES + developmentCostKES + brandingCostKES + blogCostKES;
+
+            // Convert to display currency if needed
+            let domainDisplay, hostingDisplay, developmentDisplay, brandingDisplay, blogDisplay, totalDisplay;
+            
+            if (currentCurrency === 'USD') {
+                domainDisplay = convertToUSD(domainCostKES);
+                hostingDisplay = convertToUSD(hostingCostKES);
+                developmentDisplay = convertToUSD(developmentCostKES);
+                brandingDisplay = convertToUSD(brandingCostKES);
+                blogDisplay = convertToUSD(blogCostKES);
+                totalDisplay = convertToUSD(totalKES);
+            } else {
+                domainDisplay = domainCostKES;
+                hostingDisplay = hostingCostKES;
+                developmentDisplay = developmentCostKES;
+                brandingDisplay = brandingCostKES;
+                blogDisplay = blogCostKES;
+                totalDisplay = totalKES;
+            }
+
+            // Update display
+            document.getElementById('totalCost').textContent = formatCurrency(totalDisplay, currentCurrency);
+            document.getElementById('domainCost').textContent = formatCurrency(domainDisplay, currentCurrency);
+            document.getElementById('hostingCost').textContent = formatCurrency(hostingDisplay, currentCurrency);
+            document.getElementById('developmentCost').textContent = formatCurrency(developmentDisplay, currentCurrency);
+            document.getElementById('blogCost').textContent = formatCurrency(blogDisplay, currentCurrency);
+            document.getElementById('designCost').textContent = formatCurrency(brandingDisplay, currentCurrency);
+            document.getElementById('totalBreakdown').textContent = formatCurrency(totalDisplay, currentCurrency);
+            
+            // Add animation effect
+            document.querySelector('.result-section').style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                document.querySelector('.result-section').style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        // Currency switcher
+        document.querySelectorAll('.currency-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentCurrency = this.dataset.currency;
+                calculateTotal();
+            });
+        });
+
+        // Radio button handling for branding
+        document.querySelectorAll('input[name="branding"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.radio-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                this.closest('.radio-option').classList.add('selected');
+                calculateTotal();
+            });
+        });
+
+        // Radio button handling for blog
+        document.querySelectorAll('input[name="blog"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.radio-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                this.closest('.radio-option').classList.add('selected');
+                calculateTotal();
+            });
+        });
+
+        // Event listeners
+        document.getElementById('domainType').addEventListener('change', calculateTotal);
+        document.getElementById('hostingType').addEventListener('change', calculateTotal);
+        document.getElementById('pageCount').addEventListener('input', calculateTotal);
+
+        // Initial calculation
+        calculateTotal();
+    </script>
+</body>
+</html>
