@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Development Cost Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>Ushauri Tech - Website Development Price Calculator</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +13,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 10px;
@@ -164,6 +165,12 @@
         .radio-option.selected {
             border-color: #667eea;
             background: rgba(102, 126, 234, 0.1);
+        }
+
+        .radio-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.95rem;
         }
 
         .result-section {
@@ -412,7 +419,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Website Development Calculator</h1>
+            <h1>Ushauri Tech<br>Website Development Price Calculator</h1>
             <div class="currency-switcher">
                 <button class="currency-btn active" data-currency="KES">KES</button>
                 <button class="currency-btn" data-currency="USD">USD</button>
@@ -451,10 +458,8 @@
                     <label for="hostingType">Hosting Plan:</label>
                     <select id="hostingType">
                         <option value="" disabled selected>Select hosting plan</option>
-                        <option value="12000">Premium Shared</option>
-                        <option value="19500">Cloud Starter</option>
-                        <option value="39000">Cloud Pro</option>
-                        <option value="78000">Cloud Premium</option>
+                        <option value="12000">Shared hosting: Shared server resources, Affordable</option>
+                        <option value="19500">VPS hosting: Dedicated server resources, Better website performance</option>
                         <option value="0">I have hosting</option>
                     </select>
                 </div>
@@ -467,7 +472,7 @@
                     Website Design & Development
                 </h3>
                 <div class="form-group">
-                    <label for="pageCount">Number of Pages:</label>
+                    <label for="pageCount">Number of website pages:</label>
                     <input type="number" id="pageCount" min="0" max="50" value="" placeholder="Enter number of pages">
                 </div>
                 <div class="form-group">
@@ -511,10 +516,31 @@
                 <div class="total-cost" id="totalCost">KES 0</div>
                 <div class="cost-label">Total Estimated Cost</div>
                 
+                <!-- WhatsApp Share Button -->
+                <button id="shareButton" style="
+                    background: #25D366; 
+                    color: white; 
+                    border: none; 
+                    padding: 12px 20px; 
+                    border-radius: 25px; 
+                    font-size: 0.9rem; 
+                    font-weight: 500; 
+                    cursor: pointer; 
+                    margin-top: 15px; 
+                    display: flex; 
+                    align-items: center; 
+                    gap: 8px; 
+                    transition: all 0.3s ease;
+                    font-family: 'Roboto', sans-serif;
+                " onmouseover="this.style.background='#128C7E'" onmouseout="this.style.background='#25D366'">
+                    <span style="font-size: 16px;">📤</span>
+                    Share my project details
+                </button>
+                
                 <div class="breakdown">
                     <div class="breakdown-title">💰 Cost Breakdown</div>
                     <div class="breakdown-item">
-                        <span>Domain:</span>
+                        <span>Domain (Annual):</span>
                         <span id="domainCost">KES 0</span>
                     </div>
                     <div class="breakdown-item">
@@ -565,10 +591,8 @@
 
         // Hosting prices in KES
         const hostingPricesKES = {
-            '12000': 12000, // Premium Shared
-            '19500': 19500, // Cloud Starter
-            '39000': 39000, // Cloud Pro
-            '78000': 78000, // Cloud Premium
+            '12000': 12000, // Shared hosting
+            '19500': 19500, // VPS hosting
             '0': 0          // I have hosting
         };
 
@@ -703,10 +727,41 @@
             });
         });
 
+        // WhatsApp Share Function
+        function shareToWhatsApp() {
+            const total = document.getElementById('totalCost').textContent;
+            const domainType = document.getElementById('domainType').options[document.getElementById('domainType').selectedIndex]?.text || 'Not selected';
+            const hostingType = document.getElementById('hostingType').options[document.getElementById('hostingType').selectedIndex]?.text || 'Not selected';
+            const pageCount = document.getElementById('pageCount').value || '0';
+            
+            const blogRadio = document.querySelector('input[name="blog"]:checked');
+            const blogOption = blogRadio ? (blogRadio.value === '36000' ? 'Include a blog' : 'Do not include a blog') : 'Not selected';
+            
+            const brandingRadio = document.querySelector('input[name="branding"]:checked');
+            const brandingOption = brandingRadio ? (brandingRadio.value === '12000' ? 'I need Branding Guidelines' : 'I have Branding Guidelines') : 'Not selected';
+
+            const message = `Hi! I'd like to get a quote for my website project:
+
+🌐 Domain: ${domainType}
+☁️ Hosting: ${hostingType}
+📄 Website Pages: ${pageCount} pages
+📝 Blog: ${blogOption}
+🎨 Branding: ${brandingOption}
+
+💰 Total Estimated Cost: ${total}
+
+Please get in touch to discuss my project details.`;
+
+            const phoneNumber = '+254703445086';
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
         // Event listeners
         document.getElementById('domainType').addEventListener('change', calculateTotal);
         document.getElementById('hostingType').addEventListener('change', calculateTotal);
         document.getElementById('pageCount').addEventListener('input', calculateTotal);
+        document.getElementById('shareButton').addEventListener('click', shareToWhatsApp);
 
         // Initial calculation
         calculateTotal();
