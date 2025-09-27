@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Be Vietnam Pro:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Website Development Price Calculator</title>
     <style>
         * {
@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Be Vietnam Pro', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #150b48;
             min-height: 100vh;
             padding: 10px;
             margin: 0;
@@ -39,10 +39,11 @@
             color: #2d3748;
             margin-bottom: 20px;
             font-size: 2.5rem;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #150b48;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            color: #150b48;
         }
 
         .currency-switcher {
@@ -54,9 +55,9 @@
 
         .currency-btn {
             padding: 10px 20px;
-            border: 2px solid #667eea;
+            border: 2px solid #150b48;
             background: white;
-            color: #667eea;
+            color: #150b48;
             border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
@@ -64,7 +65,7 @@
         }
 
         .currency-btn.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #150b48;
             color: white;
             transform: scale(1.05);
         }
@@ -81,7 +82,7 @@
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(21, 11, 72, 0.1);
         }
 
         .section-title {
@@ -96,7 +97,7 @@
         .icon {
             width: 24px;
             height: 24px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #150b48;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -130,8 +131,8 @@
 
         select:focus, input[type="number"]:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #150b48;
+            box-shadow: 0 0 0 3px rgba(21, 11, 72, 0.1);
         }
 
         .radio-group {
@@ -152,19 +153,19 @@
         }
 
         .radio-option:hover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
+            border-color: #150b48;
+            background: rgba(21, 11, 72, 0.05);
         }
 
         .radio-option input[type="radio"] {
             width: 18px;
             height: 18px;
-            accent-color: #667eea;
+            accent-color: #150b48;
         }
 
         .radio-option.selected {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
+            border-color: #150b48;
+            background: rgba(21, 11, 72, 0.1);
         }
 
         .radio-option label {
@@ -175,12 +176,12 @@
 
         .result-section {
             grid-column: 1 / -1;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #150b48;
             color: white;
             text-align: center;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 15px 35px rgba(21, 11, 72, 0.3);
         }
 
         .total-cost {
@@ -563,7 +564,7 @@
                     align-items: center; 
                     gap: 8px; 
                     transition: all 0.3s ease;
-                    font-family: 'Roboto', sans-serif;
+                    font-family: 'Be Vietnam Pro', sans-serif;
                     margin-left: auto;
                     margin-right: auto;
                 " onmouseover="this.style.background='#128C7E'" onmouseout="this.style.background='#25D366'">
@@ -574,10 +575,10 @@
         </div>
 
         <!-- Disclaimer Section -->
-        <div style="background: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 20px; margin-top: 30px; border: 1px solid rgba(102, 126, 234, 0.2); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);">
+        <div style="background: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 20px; margin-top: 30px; border: 1px solid rgba(21, 11, 72, 0.2); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);">
             <h4 style="color: #4a5568; margin-bottom: 10px; font-size: 1.1rem;">📋 Disclaimer</h4>
             <p style="color: #666; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Please note: the final amount displayed by this calculator is an estimate and may vary slightly from the actual project cost, which depends on the final project specifications. This calculator is intended only for corporate informational websites. For e-commerce websites or sites with advanced functionality, please contact the Ushauri Tech Team <a href="https://www.ushauritech.com/contact-us/" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 600;">here</a>.
+                Please note: the final amount displayed by this calculator is an estimate and may vary slightly from the actual project cost, which depends on the final project specifications. This calculator is intended only for corporate informational websites. For e-commerce websites or sites with advanced functionality, please contact the Ushauri Tech Team <a href="https://www.ushauritech.com/contact-us/" target="_blank" style="color: #150b48; text-decoration: none; font-weight: 600;">here</a>.
             </p>
         </div>
     </div>
